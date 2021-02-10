@@ -1,4 +1,4 @@
-from rest_framework import generics,status
+from rest_framework import generics,status,permissions
 from .models import Todo
 from rest_framework.response import Response
 from .serializers import TodoSerializer
@@ -10,16 +10,18 @@ from datetime import date
 
 
 class TodoListView (generics.ListCreateAPIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     queryset = Todo.objects.all()
     serializer_class = TodoSerializer
 
 
 class TodoDetailView (generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     queryset = Todo.objects.all()
     serializer_class = TodoSerializer
 
 class TodoCalandarView (APIView):
-
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     def get (self,request,type,format=None):
         if type =='day':
             todo = Todo.objects.filter(date_created=date.today())
